@@ -15,11 +15,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import OneClassSVM
 from sklearn.cluster import DBSCAN
 
-
-# =========================
-# Paths
-# =========================
-
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 DATA_PATH = PROJECT_ROOT / "Dataset" / "ai4i2020.csv"
@@ -29,18 +24,10 @@ COMPARISON_PATH = RESULTS_DIR / "model_comparison.csv"
 RESULTS_DIR.mkdir(exist_ok=True)
 
 
-# =========================
-# Data Loading
-# =========================
-
 def load_data(path: Path) -> pd.DataFrame:
     df = pd.read_csv(path)
     return df
 
-
-# =========================
-# Feature Engineering
-# =========================
 
 def add_industrial_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
@@ -64,10 +51,6 @@ def add_industrial_features(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-
-# =========================
-# Preprocessing
-# =========================
 
 def prepare_train_test_data(df: pd.DataFrame):
     target_column = "Machine failure"
@@ -115,10 +98,6 @@ def prepare_train_test_data(df: pd.DataFrame):
         "feature_columns": feature_columns,
     }
 
-
-# =========================
-# Models
-# =========================
 
 def train_supervised_models(prepared):
     X_train = prepared["X_train"]
@@ -179,11 +158,6 @@ def train_anomaly_models(prepared):
 
     return models
 
-
-# =========================
-# Evaluation
-# =========================
-
 def evaluate_supervised_models(models, prepared):
     X_test = prepared["X_test"]
     y_test = prepared["y_test"]
@@ -239,10 +213,6 @@ def save_model_comparison(results):
     return comparison
 
 
-# =========================
-# Dashboard Pipeline
-# =========================
-
 @st.cache_resource
 def train_dashboard_pipeline():
     raw_df = load_data(DATA_PATH)
@@ -265,10 +235,6 @@ def train_dashboard_pipeline():
 
     return engineered_df, prepared, all_models, comparison
 
-
-# =========================
-# Prediction
-# =========================
 
 def predict_dashboard_row(model_name, model, row_features, prepared):
     preprocessor = prepared["preprocessor"]
@@ -296,9 +262,6 @@ def predict_dashboard_row(model_name, model, row_features, prepared):
     return prediction, anomaly_score
 
 
-# =========================
-# UI Functions
-# =========================
 
 def show_sensor_values(row):
     col1, col2, col3, col4 = st.columns(4)
@@ -316,9 +279,7 @@ def show_sensor_values(row):
     col8.metric("Wear torque", f"{row['wear_torque']:.0f}")
 
 
-# =========================
-# Main App
-# =========================
+
 
 def main():
     st.set_page_config(
