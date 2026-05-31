@@ -1,4 +1,3 @@
-"""Main script for the AI4I predictive maintenance machine learning project."""
 
 from pathlib import Path
 
@@ -21,7 +20,6 @@ FIGURES_DIR = Path("results/figures")
 
 
 def main() -> None:
-    """Run the full project pipeline."""
     df = load_data(DATA_PATH)
     display_basic_info(df)
 
@@ -38,7 +36,7 @@ def main() -> None:
     results.extend(evaluate_anomaly_models(anomaly_models, prepared))
 
     comparison = save_model_comparison(results, RESULTS_PATH)
-    print("\nModel comparison:")
+    print("Model comparison:")
     print(comparison)
     print(f"\nSaved comparison table to {RESULTS_PATH}")
     print(f"Saved EDA figures to {FIGURES_DIR}")
